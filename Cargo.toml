@@ -1,5 +1,5 @@
 [package]
-name = "exhaustMeServer"
+name = "exhaust_me_server"
 version = "0.1.0"
 authors = ["glechelo <lechelon.guillaume@gmail.com>"]
 edition = "2018"
@@ -10,5 +10,6 @@ edition = "2018"
 actix-web = "2.0"
 actix-rt = "1.0"
 serde = "1.0.116"
+mysql = "*"
 
 
