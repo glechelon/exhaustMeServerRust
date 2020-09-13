@@ -1,48 +1,39 @@
+
+
+use actix_web::{middleware, web, App, HttpServer};
+use sqlx::mysql::MySqlPoolOptions;
+
 mod controllers;
 mod domain;
+mod repositories;
 
-use mysql::*;
-use mysql::prelude::*;
-
-const URL_DB : &str = "mysql://guillaume:enzo1542@localhost:3306/EXHAUST_ME";
-
-use actix_web::{App, HttpServer};
-
- fn main() {
-    let pool = connect_db();
-    if pool.is_ok() {
-        let mut opt_connexion = pool.unwrap().get_conn();
-        if opt_connexion.is_ok() {
-            let mut connexion = opt_connexion.unwrap();
-            connexion.query_drop(
-            r"CREATE TEMPORARY TABLE payment (
-                customer_id int not null,
-                amount int not null,
-                account_name text
-            )").expect("erreur");
-        connexion.query_drop("SELECT COUNT(*) FROM payment");
-        }
-    }
-
-    
-
-    serve();
-
-}
-
+const URL_DB: &str = "mysql://guillaume:enzo1542@localhost:3306/EXHAUST_ME";
 
 #[actix_rt::main]
-async fn serve() ->std::io::Result<()>{
-    HttpServer::new(|| {
-        App::new().service(controllers::user_controller::get_users)
+async fn main() -> Result<(), sqlx::Error> {
+    let db_pool = MySqlPoolOptions::new()
+        .max_connections(5)
+        .connect(&URL_DB)
+        .await?;
+
+    let user_repository = repositories::user_repository::UserRepository {
+        db: db_pool.clone(),
+    };
+    HttpServer::new(move || {
+        App::new()
+            .wrap(middleware::NormalizePath::new(
+                middleware::normalize::TrailingSlash::Always,
+            ))
+            .wrap(middleware::Logger::default())
+            .data(user_repository.clone())
+            .service(
+                web::scope("/users")
+                    .service(controllers::user_controller::get_users)
+                    .service(controllers::user_controller::get_user),
+            )
     })
     .bind("127.0.0.1:8088")?
     .run()
-    .await
-
-}
-
-
-fn connect_db() -> Result<Pool>{
-   return  Pool::new(URL_DB);
+    .await?;
+    Ok(())
 }
