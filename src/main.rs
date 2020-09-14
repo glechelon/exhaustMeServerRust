@@ -1,5 +1,3 @@
-
-
 use actix_web::{middleware, web, App, HttpServer};
 use sqlx::mysql::MySqlPoolOptions;
 
@@ -29,7 +27,10 @@ async fn main() -> Result<(), sqlx::Error> {
             .service(
                 web::scope("/users")
                     .service(controllers::user_controller::get_users)
-                    .service(controllers::user_controller::get_user),
+                    .service(controllers::user_controller::get_user)
+                    .service(controllers::user_controller::create_user)
+                    .service(controllers::user_controller::modify_user)
+                    .service(controllers::user_controller::delete_user),
             )
     })
     .bind("127.0.0.1:8088")?
