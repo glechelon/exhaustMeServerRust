@@ -5,7 +5,7 @@ mod controllers;
 mod domain;
 mod repositories;
 
-const URL_DB: &str = "mysql://guillaume:enzo1542@localhost:3306/EXHAUST_ME";
+const URL_DB: &str = "mysql://exhaustMeServer:pwdExhaustMeServer@localhost:3306/EXHAUST_ME";
 
 #[actix_rt::main]
 async fn main() -> Result<(), sqlx::Error> {
