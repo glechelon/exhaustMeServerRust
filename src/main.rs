@@ -43,3 +43,4 @@ async fn main() -> Result<(), sqlx::Error> {
     .await?;
     Ok(())
 }
+
