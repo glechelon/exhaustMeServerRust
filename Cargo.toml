@@ -1,17 +1,16 @@
 [package]
-name = "exhaust_me_server"
-version = "0.1.0"
 authors = ["glechelo <lechelon.guillaume@gmail.com>"]
 edition = "2018"
+name = "exhaust_me_server"
+version = "0.1.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-actix-web = "3.0.1"
 actix-rt = "1.0"
-serde = "1.0.116"
-tokio = "0.2.22"
+actix-web = "3.0.1"
 anyhow = "1.0.2"
-sqlx = { version = "0.4.0-beta.1", default-features = false, features = [ "runtime-tokio", "macros", "mysql" ] }
-
-
+env_logger = "0.7.1"
+serde = "1.0.116"
+sqlx = {version = "0.4.0-beta.1", default-features = false, features = ["runtime-tokio", "macros", "mysql"]}
+tokio = "0.2.22"
