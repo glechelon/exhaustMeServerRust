@@ -15,3 +15,6 @@ serde = "1.0.116"
 sqlx = {version = "0.4.0-beta.1", default-features = false, features = ["runtime-tokio", "macros", "mysql"]}
 tokio = "0.2.22"
 log = "0.4.11"
+uuid = "0.8"
+blake3 = "0.3.6"
+
